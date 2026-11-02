@@ -8,10 +8,6 @@ public:
             if(zeros<=k)
                 maxLen=max(maxLen,right-left+1);
             else{
-                while(nums[left])
-                {
-                    left++;
-                }
                 if (nums[left]==0) zeros--;
                 left++;
             }
