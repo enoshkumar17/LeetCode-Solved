@@ -1,33 +1,34 @@
 class Solution {
-    bool areVectorsEqual(vector<int> a, vector<int> b){
-        for(int i=0; i<26; i++){
-            if(a[i]!=b[i]) return false;
-        }
-        return true;
-    }
 public:
     bool checkInclusion(string s1, string s2) {
-        if(s2.size()<s1.size()) return false;
-        vector<int> freqS1(26, 0);
-        for(char c: s1) freqS1[c-'a']++;
-        
-        vector<int> freqS2(26, 0);
-        int i=0, j=0;
-        
-        while(j<s2.size()){
-            freqS2[s2[j]-'a']++;
-            
-            if(j-i+1==s1.size()){
-                if(areVectorsEqual(freqS1, freqS2)) return true;
-            }
-            
-            if(j-i+1<s1.size()) j++;
+        int left=0,n1=s1.size(),n2=s2.size(),i=0,match=0;
+        if(n1>n2) return false;
+        vector<int>str1(26,0),str2(26,0);
+        for(char c:s1) str1[c-'a']++;
+        for(int i=0;i<n1;i++) str2[s2[i]-'a']++;
+        for(int i=0;i<26;i++) match += str1[i]==str2[i]? 1:0;
+        int right=n1;
+        while(right<n2)
+        {
+            if(match==26) return true;
             else{
-                freqS2[s2[i]-'a']--;
-                i++;
-                j++;
+                if(str2[s2[left]-'a']==str1[s2[left]-'a']) match--;
+                //matched before removing -> -1
+                str2[s2[left]-'a']--;
+                //matched after removing -> +1
+                if(str2[s2[left]-'a']==str1[s2[left]-'a']) match++;
+
+
+                if(str2[s2[right]-'a']==str1[s2[right]-'a']) match--;
+                //matched before adding -> -1
+                str2[s2[right]-'a']++;
+                //matched FTER ADDING -> +1
+                if(str2[s2[right]-'a']==str1[s2[right]-'a']) match++;
+                
+                left++;
+                right++;
             }
         }
-        return false;
+        return (match==26);
     }
 };
